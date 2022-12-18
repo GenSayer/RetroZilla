@@ -120,7 +120,14 @@ static __inline__ PRUint32 swap4b(PRUint32 value)
 }
 #define SHA_HTONL(x) swap4b(x)
 
-#else
+#endif
+
+/* HACK: if defined NSS_NO_BSWAP then undefine bswap */
+#ifdef NSS_NO_BSWAP
+#undef SHA_HTONL
+#endif
+
+#ifndef SHA_HTONL
 #define SWAP4MASK  0x00FF00FF
 #define SHA_HTONL(x) (t1 = (x), t1 = (t1 << 16) | (t1 >> 16), \
                       ((t1 & SWAP4MASK) << 8) | ((t1 >> 8) & SWAP4MASK))

@@ -396,7 +396,14 @@ static const HALF PC2[8][64] = {
        defined(__ARM_ARCH_7R__))))
 #define BYTESWAP(word, temp) \
     __asm("rev %0, %0" : "+r" (word));
-#else
+#endif
+
+/* HACK: if defined NSS_NO_BSWAP then undefine bswap */
+#ifdef NSS_NO_BSWAP
+#undef BYTESWAP
+#endif
+
+#ifndef BYTESWAP
 #define BYTESWAP(word, temp) \
     word = (word >> 16) | (word << 16); \
     temp = 0x00ff00ff; \

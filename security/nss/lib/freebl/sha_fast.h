@@ -54,6 +54,11 @@ swap4b(PRUint32 dwd)
 #endif /* NSS_X86_OR_X64 */
 #endif /* IS_LITTLE_ENDIAN */
 
+/* HACK: if defined NSS_NO_BSWAP then undefine bswap */
+#ifdef NSS_NO_BSWAP
+#undef SHA_HTONL
+#endif
+
 #pragma intrinsic (_lrotr, _lrotl) 
 #define SHA_ROTL(x,n) _lrotl(x,n)
 #define SHA_ROTL_IS_DEFINED 1
